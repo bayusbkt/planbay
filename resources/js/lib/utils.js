@@ -14,9 +14,13 @@ export const STATUS = {
 };
 
 export const PRIORITY = {
-  URGENT: 'Urgent',
-  HIGH: 'High',
-  MEDIUM: 'Medium',
-  LOW: 'Low',
-  UNKNOWN: 'Unknown'
+    URGENT: 'Urgent',
+    HIGH: 'High',
+    MEDIUM: 'Medium',
+    LOW: 'Low',
+    UNKNOWN: 'Unknown',
+};
+
+export function flashMessage(params){
+    return params.props.flash_message;
 }
