@@ -21,6 +21,6 @@ export const PRIORITY = {
     UNKNOWN: 'Unknown',
 };
 
-export function flashMessage(params){
+export function flashMessage(params) {
     return params.props.flash_message;
 }
