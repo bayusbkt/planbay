@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
+import { Toaster } from '@/Components/ui/sonner';
 import { Dialog, Transition } from '@headlessui/react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
@@ -11,10 +12,12 @@ export default function AppLayout({ children, title }) {
 
     const auth = usePage().props.auth.user;
     const { url } = usePage();
+    const { workspaces } = usePage().props;
 
     return (
         <>
             <Head title={title} />
+            <Toaster position="top-center" />
             <div>
                 <Transition.Root show={sidebarOpen} as={Fragment}>
                     <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -63,7 +66,7 @@ export default function AppLayout({ children, title }) {
                                     </Transition.Child>
 
                                     {/* Sidebar Responsive */}
-                                    <SidebarResponsive auth={auth} url={url}/>
+                                    <SidebarResponsive auth={auth} url={url} workspaces={workspaces} />
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
@@ -82,7 +85,7 @@ export default function AppLayout({ children, title }) {
                         </div>
 
                         {/* Sidebar */}
-                        <Sidebar auth={auth} url={url}/>
+                        <Sidebar auth={auth} url={url} workspaces={workspaces} />
                     </div>
                 </div>
 
