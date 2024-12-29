@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
+import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { PiHouse, PiLockKeyOpen, PiPlus, PiSquaresFour, PiUser } from 'react-icons/pi';
 
-export default function Sidebar() {
+export default function Sidebar({ auth, url }) {
     return (
         <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -11,32 +12,67 @@ export default function Sidebar() {
                         {/* menu */}
                         <li>
                             <Link
-                                href="#"
-                                className="group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter text-foreground hover:bg-gray-100"
+                                href={route('dashboard')}
+                                className={cn(
+                                    url.startsWith('/dashboard')
+                                        ? 'bg-red-500 text-white'
+                                        : 'text-foreground hover:bg-gray-100',
+                                    'group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter',
+                                )}
                             >
-                                <PiHouse className="h-6 w-6 shrink-0 text-foreground" /> Dashboard
+                                <PiHouse
+                                    className={cn(
+                                        url.startsWith('/dashboard') ? 'text-white' : 'text-foreground',
+                                        'h-6 w-6 shrink-0',
+                                    )}
+                                />{' '}
+                                Dashboard
                             </Link>
                         </li>
                         <li>
                             <Link
                                 href="#"
-                                className="group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter text-foreground hover:bg-gray-100"
+                                className={cn(
+                                    url.startsWith('/users')
+                                        ? 'bg-red-500 text-white'
+                                        : 'text-foreground hover:bg-gray-100',
+                                    'group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter',
+                                )}
                             >
-                                <PiUser className="h-6 w-6 shrink-0 text-foreground" /> People
+                                <PiUser
+                                    className={cn(
+                                        url.startsWith('/users') ? 'text-white' : 'text-foreground',
+                                        'h-6 w-6 shrink-0',
+                                    )}
+                                />{' '}
+                                People
                             </Link>
                         </li>
                         <li>
                             <Link
                                 href="#"
-                                className="group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter text-foreground hover:bg-gray-100"
+                                className={cn(
+                                    url.startsWith('/my-tasks')
+                                        ? 'bg-red-500 text-white'
+                                        : 'text-foreground hover:bg-gray-100',
+                                    'group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter',
+                                )}
                             >
-                                <PiSquaresFour className="h-6 w-6 shrink-0 text-foreground" /> My Task
+                                <PiSquaresFour
+                                    className={cn(
+                                        url.startsWith('/my-tasks') ? 'text-white' : 'text-foreground',
+                                        'h-6 w-6 shrink-0',
+                                    )}
+                                />{' '}
+                                My Task
                             </Link>
                         </li>
                         <li>
                             <Link
-                                href="#"
-                                className="group flex gap-x-3 rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter text-foreground hover:bg-gray-100"
+                                href={route('logout')}
+                                method="post"
+                                as='button'
+                                className="group flex gap-x-3 w-full rounded-md p-3 text-sm font-semibold leading-relaxed tracking-tighter text-foreground hover:bg-gray-100"
                             >
                                 <PiLockKeyOpen className="h-6 w-6 shrink-0 text-foreground" /> Logout
                             </Link>
@@ -74,7 +110,7 @@ export default function Sidebar() {
                         <Avatar>
                             <AvatarFallback>X</AvatarFallback>
                         </Avatar>
-                        <span>Bayu Subekti</span>
+                        <span>{auth.name}</span>
                     </Link>
                 </li>
             </ul>
