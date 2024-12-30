@@ -34,7 +34,7 @@ class Workspace extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function Cards(): HasMany
+    public function cards(): HasMany
     {
         return $this->hasMany(Card::class);
     }

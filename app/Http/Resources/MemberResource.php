@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WorkspaceSidebarResource extends JsonResource
+class MemberResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,10 @@ class WorkspaceSidebarResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'memberable' => [
-                'id' => $this->memberable->id,
-                'name' => $this->memberable->name,
-                'slug' => $this->memberable->slug,
-                'created_at' => $this->memberable->created_at->format('d M Y')
-            ]
-
-        ];
+            'memberable_id' => $this->memberable_id,
+            'memberable_type' => $this->memberable_type,
+            'role' => $this->role,
+            'user' => new UserSingleResource($this->user)
+            ];
     }
 }

@@ -13,11 +13,11 @@ export default function AppLayout({ children, title }) {
     const auth = usePage().props.auth.user;
     const { url } = usePage();
     const { workspaces } = usePage().props;
-
+    
     return (
         <>
             <Head title={title} />
-            <Toaster position="top-center" />
+            <Toaster position="top-center" richColors />
             <div>
                 <Transition.Root show={sidebarOpen} as={Fragment}>
                     <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
