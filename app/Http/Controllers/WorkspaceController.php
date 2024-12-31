@@ -61,8 +61,8 @@ class WorkspaceController extends Controller
     public function show(Workspace $workspace): Response
     {
         return Inertia(
-            component: 'Workspaces/Show',
-            props: [
+            'Workspaces/Show',
+            [
                 'cards' => fn() => CardResource::collection(
                     $workspace->load([
                         'cards' => fn($q) => $q
@@ -83,8 +83,8 @@ class WorkspaceController extends Controller
     public function edit(Workspace $workspace): Response
     {
         return Inertia(
-            component: 'Workspaces/Setting',
-            props: [
+            'Workspaces/Setting',
+            [
                 'workspace' => fn() => new WorkspaceResource($workspace->load('members')),
                 'page_settings' => [
                     'title' => 'Edit Workspace',
