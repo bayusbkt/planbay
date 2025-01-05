@@ -44,7 +44,6 @@ export default function MemberCard({ action, members }) {
                                     type="email"
                                     name="email"
                                     id="email"
-                                    onFocused={true}
                                     onChange={onHandleChange}
                                     value={data.email}
                                     onErrors={errors.email && <InputError message={errors.email} />}
