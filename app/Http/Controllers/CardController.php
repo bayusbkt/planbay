@@ -46,9 +46,14 @@ class CardController extends Controller
                 'priority' => $request->priority,
             ]);
 
+        $card->members()->create([
+            'user_id' => $request->user()->id,
+            'role' => $card->user_id == $request->user()->id ? 'Owner' : 'Member'
+        ]);
+
         flashMessage('Card information saved successfully');
 
-        return to_route('workspaces.show', [$workspace, $card]);
+        return to_route('cards.edit', [$workspace, $card]);
     }
 
     public function show(Workspace $workspace, Card $card): Response
