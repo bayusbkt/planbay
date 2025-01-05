@@ -111,7 +111,24 @@ export default function AttachmentCard({ action, attachments }) {
                                     <Button
                                         variant="link"
                                         className="font-medium text-red-500 hover:text-red-600 hover:no-underline"
-                                        onClick={() => router.delete(console.log('delete'))}
+                                        onClick={() =>
+                                            router.delete(
+                                                route('attachments.destroy', {
+                                                    card: attachment.card_id,
+                                                    attachment: attachment.id,
+                                                }),
+                                                {
+                                                    preserveScroll: true,
+                                                    preserveState: true,
+                                                    onSuccess: (success) => {
+                                                        const flash = flashMessage(success);
+                                                        if (flash) {
+                                                            toast[flash.type](flash.message);
+                                                        }
+                                                    },
+                                                },
+                                            )
+                                        }
                                     >
                                         Delete
                                     </Button>
