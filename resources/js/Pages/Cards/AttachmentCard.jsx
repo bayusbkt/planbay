@@ -5,10 +5,11 @@ import { Button } from '@/Components/ui/button';
 import { Card, CardContent } from '@/Components/ui/card';
 import { flashMessage } from '@/lib/utils';
 import { Transition } from '@headlessui/react';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
+import { PiPaperclip } from 'react-icons/pi';
 import { toast } from 'sonner';
 
-export default function AttachmentCard({ action }) {
+export default function AttachmentCard({ action, attachments }) {
     const { data, setData, errors, reset, recentlySuccessful, processing, post } = useForm({
         file: '',
         link: '',
@@ -91,6 +92,34 @@ export default function AttachmentCard({ action }) {
                         </Transition>
                     </div>
                 </form>
+                <div className="space-y-4 py-6">
+                    <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                        {attachments.map((attachment, index) => (
+                            <li
+                                key={index}
+                                className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
+                            >
+                                <div className="flex w-0 flex-1 items-center">
+                                    <PiPaperclip className="h-5 w-5 flex-shrink-0 text-muted-foreground" />
+                                    <div className="ml-4 flex min-w-0 flex-col">
+                                        <span className="truncate font-medium">
+                                            {attachment.name ? attachment.name : attachment.file}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="ml-4 flex shrink-0">
+                                    <Button
+                                        variant="link"
+                                        className="font-medium text-red-500 hover:text-red-600 hover:no-underline"
+                                        onClick={() => router.delete(console.log('delete'))}
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </CardContent>
         </Card>
     );

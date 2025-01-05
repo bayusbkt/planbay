@@ -29,7 +29,9 @@ class CardSingleResource extends JsonResource
             'priority' => $this->priority,
             'created_at' => $this->created_at->format('d M Y'),
             'members' => MemberResource::collection($this->members),
-            'members_count' => $this->members_count
+            'members_count' => $this->members_count,
+            'attachments' => $this->attachments,
+            'has_attachment' => $this->attachments()->exists()
         ];
     }
 }
