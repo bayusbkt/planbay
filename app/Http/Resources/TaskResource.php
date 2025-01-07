@@ -20,7 +20,8 @@ class TaskResource extends JsonResource
             'user_id' => $this->user_id,
             'title' => $this->title,
             'is_completed' => $this->is_completed,
-            'parent_id' => $this->parent_id
+            'parent_id' => $this->parent_id,
+            'children' => self::collection($this->children)
         ];
     }
 }

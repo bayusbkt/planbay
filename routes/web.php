@@ -63,6 +63,8 @@ Route::controller(AttachmentController::class)->group(function () {
 Route::controller(TaskController::class)->group(function () {
     Route::post('/cards/task/{card}/store', 'store')->name('tasks.store');
     Route::delete('/cards/task/{card}/destroy/{task}', 'destroy')->name('tasks.destroy');
+
+    Route::post('/cards/task/{card}/{task}/item', 'item')->name('tasks.item');
 })->middleware('auth');
 
 require __DIR__ . '/auth.php';
