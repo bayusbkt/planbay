@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { PiPlus, PiSquaresFour } from 'react-icons/pi';
 import { toast } from 'sonner';
 import TaskListChildrenCard from './TaskListChildrenCard';
+import { Progress } from '@/Components/ui/progress';
 
 export default function TaskListCard({ tasks }) {
     const [showFormItem, setShowFormItem] = useState({});
@@ -85,6 +86,7 @@ export default function TaskListCard({ tasks }) {
                                         </Button>
                                     </div>
                                 </div>
+                                <Progress className="mb-4 h-2.5" value={task.percentage}/>
                                 <TaskListChildrenCard children={task.children}/>
                                 {showFormItem[task.id] || task.children.length > 0 ? (
                                     <form onSubmit={(e) => handleSubmit(e, task)}>

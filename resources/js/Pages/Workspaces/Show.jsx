@@ -1,6 +1,6 @@
 import { ActionDialog } from '@/Components/ActionDialog';
 import GetPriorityBadge from '@/Components/GetPriorityBadge';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,10 +8,11 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip';
 import AppLayout from '@/Layouts/AppLayout';
 import { flashMessage } from '@/lib/utils';
 import { Link, router } from '@inertiajs/react';
-import { PiDotsThreeOutlineFill, PiPlus } from 'react-icons/pi';
+import { PiCheckSquare, PiDotsThreeOutlineFill, PiLinkSimple, PiPlus, PiUser } from 'react-icons/pi';
 import { toast } from 'sonner';
 
 export default function Show({ workspace, statuses, cards }) {
@@ -141,6 +142,86 @@ export default function Show({ workspace, statuses, cards }) {
                                                     {card.description}
                                                 </CardDescription>
                                             </CardHeader>
+                                            <CardContent>
+                                                <div className="flex flex-col space-y-8">
+                                                    {card.has_task && (
+                                                        <div>
+                                                            <div className="mb-1.5 flex items-center justify-between">
+                                                                <p className="text-sm leading-relaxed tracking-tighter text-muted-foreground">
+                                                                    <span className="font-medium text-red-500">
+                                                                        {card.percentage}
+                                                                    </span>{' '}
+                                                                    of 100
+                                                                </p>
+                                                                <p className="text-sm leading-relaxed tracking-tighter text-muted-foreground">
+                                                                    {card.deadline > 0 ? (
+                                                                        <span>{card.deadline} days left</span>
+                                                                    ) : card.deadline == 0 ? (
+                                                                        <span className="text-yellow-500">
+                                                                            Today is deadline
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className="text-red-500">Overdue</span>
+                                                                    )}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    <div className="flex items-center justify-between gap-x-2">
+                                                        {card.has_task && (
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <div className="flex items-center gap-x-1 cursor-pointer">
+                                                                            <PiCheckSquare className="h-4 w-4 text-muted-foreground" />
+                                                                            <span className="text-sm leading-relaxed tracking-tighter text-muted-foreground">
+                                                                                {card.tasks_count}
+                                                                            </span>
+                                                                        </div>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>Tasks</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        )}
+                                                        {card.members_count > 1 && (
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <div className="flex items-center gap-x-1 cursor-pointer">
+                                                                            <PiUser className="h-4 w-4 text-muted-foreground" />
+                                                                            <span className="text-sm leading-relaxed tracking-tighter text-muted-foreground">
+                                                                                {card.members_count}
+                                                                            </span>
+                                                                        </div>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>Members</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        )}
+                                                        {card.has_attachment && (
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <div className="flex items-center gap-x-1 cursor-pointer">
+                                                                            <PiLinkSimple className="h-4 w-4 text-muted-foreground" />
+                                                                            <span className="text-sm leading-relaxed tracking-tighter text-muted-foreground">
+                                                                                {card.attachments_count}
+                                                                            </span>
+                                                                        </div>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>Attachments</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </CardContent>
                                         </Card>
                                     ))}
                             </div>
