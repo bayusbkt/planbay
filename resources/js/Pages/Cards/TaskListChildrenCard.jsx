@@ -11,7 +11,30 @@ export default function TaskListChildrenCard({ children }) {
                 children.map((item, index) => (
                     <li className="flex items-center justify-center py-6 text-sm leading-relaxed" key={index}>
                         <div className="flex w-0 flex-1 items-center">
-                            <Button type="button" size="icon" variant="ghost" onClick={() => console.log('qdw')}>
+                            <Button
+                                type="button"
+                                size="icon"
+                                variant="ghost"
+                                onClick={() =>
+                                    router.put(
+                                        route('tasks.completed', {
+                                            card: item.card_id,
+                                            task: item.id,
+                                        }),
+                                        {},
+                                        {
+                                            preserveScroll: true,
+                                            preserveState: true,
+                                            onSuccess: (success) => {
+                                                const flash = flashMessage(success);
+                                                if (flash) {
+                                                    toast[flash.type](flash.message);
+                                                }
+                                            },
+                                        },
+                                    )
+                                }
+                            >
                                 {item.is_completed == true ? (
                                     <PiCheckSquareFill className="h-5 w-5 flex-shrink-0 text-foreground" />
                                 ) : (

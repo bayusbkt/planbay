@@ -65,6 +65,7 @@ Route::controller(TaskController::class)->group(function () {
     Route::delete('/cards/task/{card}/destroy/{task}', 'destroy')->name('tasks.destroy');
 
     Route::post('/cards/task/{card}/{task}/item', 'item')->name('tasks.item');
+    Route::put('/cards/task/{card}/{task}/completed', 'completed')->name('tasks.completed');
 })->middleware('auth');
 
 require __DIR__ . '/auth.php';
