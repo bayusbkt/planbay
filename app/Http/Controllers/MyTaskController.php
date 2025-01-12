@@ -15,11 +15,16 @@ class MyTaskController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $tasks = Member::query()->where('members.user_id', $request->user()->id)->whereHasMorph('memberable', Card::class)->when(request()->search, function ($query, $value) {
-            return $query->whereHasMorph('memberable', Card::class, function ($subquery) use ($value) {
-                $subquery->where('title', 'REGEXP', $value);
-            });
-        })->paginate(request()->load ?? 10);
+        $tasks = Member::query()->where('members.user_id', $request->user()->id)
+            ->whereHasMorph('memberable', Card::class)
+            ->when(request()->search, function ($query, $value) {
+                return $query->whereHasMorph('memberable', Card::class, function ($subquery) use ($value) {
+                    $subquery->where('title', 'REGEXP', $value);
+                });
+            })->when(request()->field && request()->direction, function ($query) {
+                return $query->join('cards', 'members.memberable_id', '=', 'cards.id')
+                    ->orderBy('cards.title', request()->direction);
+            })->paginate(request()->load ?? 10);
 
         return Inertia('Tasks/Index', [
             'tasks' => fn() => MyTaskResource::collection($tasks)->additional([
