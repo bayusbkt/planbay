@@ -19,7 +19,7 @@ class MyTaskController extends Controller
             return $query->whereHasMorph('memberable', Card::class, function ($subquery) use ($value) {
                 $subquery->where('title', 'REGEXP', $value);
             });
-        })->paginate(10);
+        })->paginate(request()->load ?? 10);
 
         return Inertia('Tasks/Index', [
             'tasks' => fn() => MyTaskResource::collection($tasks)->additional([
@@ -33,7 +33,8 @@ class MyTaskController extends Controller
             ],
             'state' => [
                 'page' => request()->page ?? 1,
-                'search' => request()->search ?? ''
+                'search' => request()->search ?? '',
+                'load' => 10
             ]
         ]);
     }
