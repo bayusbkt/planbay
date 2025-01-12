@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Toaster } from '@/Components/ui/sonner';
 import { Dialog, Transition } from '@headlessui/react';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -13,7 +13,7 @@ export default function AppLayout({ children, title }) {
     const auth = usePage().props.auth.user;
     const { url } = usePage();
     const { workspaces } = usePage().props;
-    
+
     return (
         <>
             <Head title={title} />
@@ -101,10 +101,11 @@ export default function AppLayout({ children, title }) {
                     <div className="flex-1 text-sm font-semibold leading-relaxed tracking-tighter text-foreground">
                         {title}
                     </div>
-                    <Link href="#">
+                    <Link href={route('profile.edit')}>
                         <span className="sr-only">Your profile</span>
                         <Avatar>
-                            <AvatarFallback>X</AvatarFallback>
+                            <AvatarImage src={auth.avatar} />
+                            <AvatarFallback>{auth.name.substring(0, 1)}</AvatarFallback>
                         </Avatar>
                     </Link>
                 </div>
