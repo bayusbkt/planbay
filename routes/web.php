@@ -4,6 +4,7 @@ use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberCardController;
+use App\Http\Controllers\MyTaskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WorkspaceController;
@@ -38,7 +39,7 @@ Route::controller(WorkspaceController::class)->group(function () {
 
     Route::post('/workspaces/member/{workspace:slug}/store', 'member_store')->name('workspaces.member_store');
     Route::delete('/workspaces/member/{workspace}/destroy/{member}', 'member_destroy')->name('workspaces.member_destroy');
-});
+})->middleware('auth');
 
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards/{workspace:slug}/create', 'create')->name('cards.create');
@@ -67,5 +68,7 @@ Route::controller(TaskController::class)->group(function () {
     Route::post('/cards/task/{card}/{task}/item', 'item')->name('tasks.item');
     Route::put('/cards/task/{card}/{task}/completed', 'completed')->name('tasks.completed');
 })->middleware('auth');
+
+Route::get('/my-tasks', MyTaskController::class)->name('mytasks.index');
 
 require __DIR__ . '/auth.php';
