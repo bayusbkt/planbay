@@ -34,9 +34,9 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->name('users.index');
     Route::get('/users/create', 'create')->name('users.create');
     Route::post('/users/create', 'store')->name('users.store');
-    Route::get('/users/edit/{workspace:slug}', 'edit')->name('users.edit');
-    Route::put('/users/edit/{workspace:slug}', 'update')->name('users.update');
-    Route::delete('/users/destroy/{workspace:slug}', 'destroy')->name('users.destroy');
+    Route::get('/users/edit/{user}', 'edit')->name('users.edit');
+    Route::put('/users/edit/{user}', 'update')->name('users.update');
+    Route::delete('/users/destroy/{user}', 'destroy')->name('users.destroy');
 })->middleware('auth');
 
 Route::controller(WorkspaceController::class)->group(function () {
