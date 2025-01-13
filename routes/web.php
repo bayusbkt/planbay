@@ -37,7 +37,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/edit/{user}', 'edit')->name('users.edit');
     Route::put('/users/edit/{user}', 'update')->name('users.update');
     Route::delete('/users/destroy/{user}', 'destroy')->name('users.destroy');
-})->middleware('auth');
+})->middleware(['auth', 'role:admin']);
 
 Route::controller(WorkspaceController::class)->group(function () {
     Route::get('/workspaces/create', 'create')->name('workspaces.create');
