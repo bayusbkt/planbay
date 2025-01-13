@@ -7,6 +7,7 @@ use App\Http\Controllers\MemberCardController;
 use App\Http\Controllers\MyTaskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('/users', 'index')->name('users.index');
+    Route::post('/users/create', 'store')->name('users.store');
+    Route::get('/users/edit/{workspace:slug}', 'edit')->name('users.edit');
+    Route::put('/users/edit/{workspace:slug}', 'update')->name('users.update');
+    Route::delete('/users/destroy/{workspace:slug}', 'destroy')->name('users.destroy');
+})->middleware('auth');
 
 Route::controller(WorkspaceController::class)->group(function () {
     Route::get('/workspaces/create', 'create')->name('workspaces.create');

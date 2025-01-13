@@ -1,10 +1,12 @@
-import GetStatusBadge from '@/Components/GetStatusBadge';
+import { ActionDialog } from '@/Components/ActionDialog';
 import Header from '@/Components/Header';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardFooter } from '@/Components/ui/card';
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
@@ -14,16 +16,22 @@ import { UseFilter } from '@/Hooks/UseFilter';
 import AppLayout from '@/Layouts/AppLayout';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
-import { PiArrowLeft, PiArrowRight, PiArrowsDownUp, PiDotsThreeOutlineVerticalFill } from 'react-icons/pi';
+import {
+    PiArrowClockwise,
+    PiArrowLeft,
+    PiArrowRight,
+    PiArrowsDownUp,
+    PiDotsThreeOutlineVerticalFill,
+} from 'react-icons/pi';
 
 export default function Index({ page_settings, ...props }) {
-    const { data: tasks, meta, links } = props.tasks;
+    const { data: users, meta, links } = props.users;
     const [params, setParams] = useState(props.state);
 
     UseFilter({
-        route: route('mytasks.index'),
+        route: route('users.index'),
         values: params,
-        only: ['tasks'],
+        only: ['users'],
     });
 
     const sortTable = (field) => {
@@ -53,6 +61,10 @@ export default function Index({ page_settings, ...props }) {
                             ))}
                         </SelectContent>
                     </Select>
+                    <Button variant="outline" onClick={() => setParams(props.state)}>
+                        <PiArrowClockwise className="mr-2 h-4 w-4" />
+                        Clear
+                    </Button>
                 </div>
             </div>
             <Card>
@@ -70,9 +82,9 @@ export default function Index({ page_settings, ...props }) {
                                                 <Button
                                                     variant="ghost"
                                                     className="group inline-flex"
-                                                    onClick={() => sortTable('title')}
+                                                    onClick={() => sortTable('name')}
                                                 >
-                                                    Title
+                                                    Name
                                                     <span className="ml-2 flex-none rounded text-foreground">
                                                         <PiArrowsDownUp className="h-5 w-5" />
                                                     </span>
@@ -82,18 +94,51 @@ export default function Index({ page_settings, ...props }) {
                                                 className="px-2 py-3.5 text-left text-sm font-semibold text-foreground"
                                                 scope="col"
                                             >
-                                                <Button variant="ghost" className="group inline-flex">
-                                                    Status
-                                                
+                                                <Button
+                                                    variant="ghost"
+                                                    className="group inline-flex"
+                                                    onClick={() => sortTable('username')}
+                                                >
+                                                    Username
+                                                    <span className="ml-2 flex-none rounded text-foreground">
+                                                        <PiArrowsDownUp className="h-5 w-5" />
+                                                    </span>
                                                 </Button>
                                             </th>
                                             <th
                                                 className="px-2 py-3.5 text-left text-sm font-semibold text-foreground"
                                                 scope="col"
                                             >
-                                                <Button variant="ghost" className="group inline-flex">
+                                                <Button
+                                                    variant="ghost"
+                                                    className="group inline-flex"
+                                                    onClick={() => sortTable('email')}
+                                                >
+                                                    Email
+                                                    <span className="ml-2 flex-none rounded text-foreground">
+                                                        <PiArrowsDownUp className="h-5 w-5" />
+                                                    </span>
+                                                </Button>
+                                            </th>
+                                            <th
+                                                className="px-2 py-3.5 text-left text-sm font-semibold text-foreground"
+                                                scope="col"
+                                            >
+                                                Avatar
+                                            </th>
+                                            <th
+                                                className="px-2 py-3.5 text-left text-sm font-semibold text-foreground"
+                                                scope="col"
+                                            >
+                                                <Button
+                                                    variant="ghost"
+                                                    className="group inline-flex"
+                                                    onClick={() => sortTable('created_at')}
+                                                >
                                                     Created At
-                                                   
+                                                    <span className="ml-2 flex-none rounded text-foreground">
+                                                        <PiArrowsDownUp className="h-5 w-5" />
+                                                    </span>
                                                 </Button>
                                             </th>
                                             <th
@@ -105,16 +150,25 @@ export default function Index({ page_settings, ...props }) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {tasks.map((task, index) => (
+                                        {users.map((user, index) => (
                                             <tr key={index}>
                                                 <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
-                                                    {task.memberable.title}
+                                                    {user.name}
                                                 </td>
                                                 <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
-                                                    <GetStatusBadge status={task.memberable.status} />
+                                                    {user.username}
                                                 </td>
                                                 <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
-                                                    {task.memberable.created_at}
+                                                    {user.email}
+                                                </td>
+                                                <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
+                                                    <Avatar>
+                                                        <AvatarImage src={user.avatar} />
+                                                        <AvatarFallback>{user.name.substring(0, 1)}</AvatarFallback>
+                                                    </Avatar>
+                                                </td>
+                                                <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
+                                                    {user.created_at}
                                                 </td>
                                                 <td className="relative space-x-4 whitespace-nowrap px-6 py-8 text-right text-sm">
                                                     <div className="flex justify-end">
@@ -124,8 +178,24 @@ export default function Index({ page_settings, ...props }) {
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end" className="w-48">
                                                                 <DropdownMenuItem asChild>
-                                                                    <Link href={task.memberable.detail}>Detail</Link>
+                                                                    <Link href={route('users.edit', [user])}>
+                                                                        Detail
+                                                                    </Link>
                                                                 </DropdownMenuItem>
+                                                                <DropdownMenuGroup>
+                                                                    <ActionDialog
+                                                                        trigger={
+                                                                            <DropdownMenuItem
+                                                                                onSelect={(e) => e.preventDefault()}
+                                                                            >
+                                                                                Delete
+                                                                            </DropdownMenuItem>
+                                                                        }
+                                                                        title="Delete Person"
+                                                                        description="Are you sure you want to delete this person?"
+                                                                        action={() => console.log('d')}
+                                                                    />
+                                                                </DropdownMenuGroup>
                                                             </DropdownMenuContent>
                                                         </DropdownMenu>
                                                     </div>

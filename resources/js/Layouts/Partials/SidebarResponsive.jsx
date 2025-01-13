@@ -36,7 +36,7 @@ export default function SidebarResponsive({ auth, url, workspaces }) {
                             </li>
                             <li>
                                 <Link
-                                    href="#"
+                                    href={route('users.index')}
                                     className={cn(
                                         url.startsWith('/users')
                                             ? 'bg-red-500 text-white'
