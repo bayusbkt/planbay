@@ -2,10 +2,37 @@ import Header from '@/Components/Header';
 import Widget from '@/Components/Widget';
 import AppLayout from '@/Layouts/AppLayout';
 import { usePage } from '@inertiajs/react';
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 import { PiBriefcase, PiCheckBold, PiSquaresFour } from 'react-icons/pi';
 
-export default function Dashboard({ page_settings, count }) {
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+export default function Dashboard({ page_settings, count, productivity_chart }) {
     const auth = usePage().props.auth.user;
+
+    const options = {
+        responsevie: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Productivity Chart',
+            },
+        },
+    };
+
+    const data = {
+        labels: productivity_chart.label,
+        datasets: productivity_chart.datasets.map((dataset) => ({
+            label: dataset.label,
+            data: dataset.data,
+            backgroundColor: dataset.backgroundColor,
+        })),
+    };
+
     return (
         <>
             <div>
@@ -33,6 +60,9 @@ export default function Dashboard({ page_settings, count }) {
                                     bgColor="bg-gradient-to-b from-sky-400 to-sky-600"
                                 />
                             </dl>
+                        </div>
+                        <div className='px-4 pt-5 pb-6 mt-8 bg-white border rounded-lg sm:px-6 sm:pt-6'>
+                            <Bar options={options} data={data}/>
                         </div>
                     </div>
                 </div>
