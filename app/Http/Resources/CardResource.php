@@ -35,7 +35,13 @@ class CardResource extends JsonResource
             'tasks_count' => $tasks_count =  $this->tasks_count,
             'percentage' => $tasks_count > 0
                 ? round(($this->tasks->where('is_completed', true)->count() / $tasks_count) * 100)
-                : 0
+                : 0,
+                'can' => [
+                    'edit_card' => $request->user()->can('edit_card', $this->resource),
+                    'delete_card' => $request->user()->can('delete_card', $this->resource),
+                    'member_card' => $request->user()->can('member_card', $this->resource),
+                    'task_card' => $request->user()->can('task_card', $this->resource),
+                ]
 
         ];
     }

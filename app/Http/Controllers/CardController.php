@@ -10,6 +10,7 @@ use App\Models\Card;
 use App\Models\Workspace;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Response;
 
 class CardController extends Controller
@@ -69,6 +70,8 @@ class CardController extends Controller
 
     public function edit(Workspace $workspace, Card $card): Response
     {
+        Gate::authorize('edit_card', $card);
+
         return inertia('Cards/Edit', [
             'card' => new CardSingleResource($card->load(['members', 'user', 'tasks', 'attachments'])),
             'page_settings' => [
@@ -85,6 +88,8 @@ class CardController extends Controller
 
     public function update(Workspace $workspace, Card $card, CardRequest $request): RedirectResponse
     {
+        Gate::authorize('update_card', $card);
+
         $last_status = $card->status->value;
 
         $card->update([
@@ -105,6 +110,8 @@ class CardController extends Controller
 
     public function destroy(Workspace $workspace, Card $card): RedirectResponse
     {
+        Gate::authorize('delete_card', $card);
+
         $last_status = $card->status->value;
         $card->delete();
 
