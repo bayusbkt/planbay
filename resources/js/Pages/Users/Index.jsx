@@ -14,7 +14,8 @@ import { Input } from '@/Components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { UseFilter } from '@/Hooks/UseFilter';
 import AppLayout from '@/Layouts/AppLayout';
-import { Link } from '@inertiajs/react';
+import { flashMessage } from '@/lib/utils';
+import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import {
     PiArrowClockwise,
@@ -23,6 +24,7 @@ import {
     PiArrowsDownUp,
     PiDotsThreeOutlineVerticalFill,
 } from 'react-icons/pi';
+import { toast } from 'sonner';
 
 export default function Index({ page_settings, ...props }) {
     const { data: users, meta, links } = props.users;
@@ -166,7 +168,7 @@ export default function Index({ page_settings, ...props }) {
                                                 </td>
                                                 <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
                                                     <Avatar>
-                                                        <AvatarImage src={user.avatar}/>
+                                                        <AvatarImage src={user.avatar} />
                                                         <AvatarFallback>{user.name.substring(0, 1)}</AvatarFallback>
                                                     </Avatar>
                                                 </td>
@@ -181,9 +183,7 @@ export default function Index({ page_settings, ...props }) {
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end" className="w-48">
                                                                 <DropdownMenuItem asChild>
-                                                                    <Link href={route('users.edit', [user])}>
-                                                                        Edit
-                                                                    </Link>
+                                                                    <Link href={route('users.edit', [user])}>Edit</Link>
                                                                 </DropdownMenuItem>
                                                                 <DropdownMenuGroup>
                                                                     <ActionDialog
@@ -196,7 +196,24 @@ export default function Index({ page_settings, ...props }) {
                                                                         }
                                                                         title="Delete Person"
                                                                         description="Are you sure you want to delete this person?"
-                                                                        action={() => console.log('d')}
+                                                                        action={() =>
+                                                                            router.delete(
+                                                                                route('users.destroy', [user]),
+                                                                                {
+                                                                                    onSuccess: (success) => {
+                                                                                        const flash =
+                                                                                            flashMessage(success);
+                                                                                        if (flash) {
+                                                                                            toast[flash.type](
+                                                                                                flash.message,
+                                                                                            );
+                                                                                        }
+                                                                                    },
+                                                                                    preserveScroll: true,
+                                                                                    preserveState: true,
+                                                                                },
+                                                                            )
+                                                                        }
                                                                     />
                                                                 </DropdownMenuGroup>
                                                             </DropdownMenuContent>
