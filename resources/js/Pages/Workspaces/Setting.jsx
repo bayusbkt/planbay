@@ -10,10 +10,15 @@ export default function Setting({ workspace, page_settings, visibilities }) {
                 <HeaderForm title={page_settings.title} subtitle={page_settings.subtitle} />
                 <EditWorkspace workspace={workspace} page_settings={page_settings} visibilities={visibilities} />
             </div>
-            <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-3 pt-10">
-                <HeaderForm title="Members" subtitle="Please add members to the card" />
-                <MemberWorkspace action={route('workspaces.member_store', [workspace])} members={workspace.members}/>
-            </div>
+            {workspace.can.invite_workspace && (
+                <div className="grid grid-cols-1 gap-x-4 gap-y-8 pt-10 md:grid-cols-3">
+                    <HeaderForm title="Members" subtitle="Please add members to the card" />
+                    <MemberWorkspace
+                        action={route('workspaces.member_store', [workspace])}
+                        members={workspace.members}
+                    />
+                </div>
+            )}
         </div>
     );
 }

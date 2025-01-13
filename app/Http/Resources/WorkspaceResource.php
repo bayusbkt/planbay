@@ -22,7 +22,12 @@ class WorkspaceResource extends JsonResource
             'visibility' => $this->visibility->value,
             'cover' => Storage::url($this->cover),
             'logo' => Storage::url($this->logo),
-            'members' => MemberResource::collection($this->members)
-            ];
+            'members' => MemberResource::collection($this->members),
+            'can' => [
+                'edit_workspace' => request()->user()->can('update_workspace', $this->resource),
+                'invite_workspace' => request()->user()->can('member_workspace', $this->resource),
+                'delete_workspace' => request()->user()->can('delete_workspace', $this->resource),
+            ]
+        ];
     }
 }
