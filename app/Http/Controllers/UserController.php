@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Traits\HasFile;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class UserController extends Controller
 {
+    use HasFile;
+
     public function index(): Response
     {
         $users = User::query()
@@ -41,5 +47,32 @@ class UserController extends Controller
                 'load' => 10
             ]
         ]);
+    }
+
+    public function create(): Response
+    {
+        return Inertia('Users/Create', [
+            'page_settings' => [
+                'title' => 'Create Person',
+                'subtitle' => "Fill out this form to add a new person",
+                'method' => 'POST',
+                'action' => route('users.store')
+            ]
+        ]);
+    }
+
+    public function store(UserRequest $request): RedirectResponse
+    {
+        User::create([
+           'name' => $request->name,
+           'username' => $request->username,
+           'email' => $request->email,
+           'password' => Hash::make($request->password),
+           'avatar' => $this->upload_file($request, 'avatar', 'users') 
+        ]);
+
+        flashMessage('User information saved successfully');
+
+        return to_route('users.index');
     }
 }

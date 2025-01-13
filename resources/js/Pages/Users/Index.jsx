@@ -66,6 +66,9 @@ export default function Index({ page_settings, ...props }) {
                         Clear
                     </Button>
                 </div>
+                <Button variant="red" asChild>
+                    <Link href={route('users.create')}>Create</Link>
+                </Button>
             </div>
             <Card>
                 <CardContent>
@@ -163,7 +166,7 @@ export default function Index({ page_settings, ...props }) {
                                                 </td>
                                                 <td className="whitespace-nowrap px-6 py-8 text-sm font-medium text-foreground">
                                                     <Avatar>
-                                                        <AvatarImage src={user.avatar} />
+                                                        <AvatarImage src={user.avatar}/>
                                                         <AvatarFallback>{user.name.substring(0, 1)}</AvatarFallback>
                                                     </Avatar>
                                                 </td>

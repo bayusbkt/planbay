@@ -32,6 +32,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->name('users.index');
+    Route::get('/users/create', 'create')->name('users.create');
     Route::post('/users/create', 'store')->name('users.store');
     Route::get('/users/edit/{workspace:slug}', 'edit')->name('users.edit');
     Route::put('/users/edit/{workspace:slug}', 'update')->name('users.update');
